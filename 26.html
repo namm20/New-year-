@@ -1,0 +1,195 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2026!</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e74c3c;
+            --gold: #f1c40f;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        #game-container {
+            position: relative;
+            padding: 20px;
+        }
+
+        .hidden { display: none !important; }
+
+        /* Game Elements */
+        #cricket-pitch {
+            width: 300px;
+            height: 400px;
+            background: #27ae60;
+            border-radius: 20px;
+            position: relative;
+            margin: 20px auto;
+            border: 4px solid #fff;
+            cursor: crosshair;
+        }
+
+        #ball {
+            width: 30px;
+            height: 30px;
+            background: #d35400;
+            border-radius: 50%;
+            position: absolute;
+            transition: 0.2s;
+        }
+
+        /* Popups */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            color: #333;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            z-index: 100;
+            max-width: 80%;
+            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes pop {
+            from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        /* Gift Box */
+        .gift-container {
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .gift-box {
+            font-size: 80px;
+            transition: transform 0.3s;
+        }
+
+        .gift-box:hover { transform: scale(1.1) rotate(5deg); }
+
+        h1 { color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <div id="intro">
+        <h1>Happy New Year, Champ! 🏏</h1>
+        <p>To unlock your 2026 surprises, you need to hit the ball!</p>
+        <button class="btn" onclick="startGame()">Start Game</button>
+    </div>
+
+    <div id="game-container" class="hidden">
+        <h3>Click the Cricket Ball!</h3>
+        <div id="cricket-pitch">
+            <div id="ball"></div>
+        </div>
+    </div>
+
+    <div id="popup1" class="modal hidden">
+        <h2>MANIFESTING 2026 🇮🇳</h2>
+        <p>Your hard work and passion are unmatched. I can already see you walking onto that field in the 2026 Jersey! The world isn't ready for your talent yet, but Delhi's finest is about to take over!</p>
+        <button class="btn" onclick="nextStep(2)">Keep Going!</button>
+    </div>
+
+    <div id="popup2" class="modal hidden">
+        <h2>A Little Paw-some Hope 🐶</h2>
+        <p>May 2026 also be the year a cute little Shih Tzu enters your life to celebrate every century you score! You deserve all the puppy cuddles after your long practice sessions.</p>
+        <button class="btn" onclick="nextStep(3)">One last thing...</button>
+    </div>
+
+    <div id="final-step" class="hidden">
+        <h1>You've unlocked a Special Gift!</h1>
+        <div class="gift-container" onclick="openGift()">
+            <div class="gift-box">🎁</div>
+            <p>Click to open</p>
+        </div>
+    </div>
+
+    <div id="popup3" class="modal hidden">
+        <h2>Happy New Year, Bestie! ❤️</h2>
+        <p>I am so proud of the person you are becoming. Your dedication inspires me every day. But enough of Delhi—I miss you way too much!</p>
+        <p><strong>Come to Bangalore soon! Let's celebrate your future wins together. Miss you!</strong></p>
+        <button class="btn" onclick="location.reload()">Close</button>
+    </div>
+
+    <script>
+        const ball = document.getElementById('ball');
+        let hits = 0;
+
+        function startGame() {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('game-container').classList.remove('hidden');
+            moveBall();
+        }
+
+        function moveBall() {
+            const pitch = document.getElementById('cricket-pitch');
+            const x = Math.random() * (pitch.clientWidth - 30);
+            const y = Math.random() * (pitch.clientHeight - 30);
+            ball.style.left = x + 'px';
+            ball.style.top = y + 'px';
+        }
+
+        ball.addEventListener('click', () => {
+            hits++;
+            confetti({ particleCount: 50, spread: 60 });
+            if (hits === 1) {
+                document.getElementById('popup1').classList.remove('hidden');
+            }
+        });
+
+        function nextStep(step) {
+            document.querySelectorAll('.modal').forEach(m => m.classList.add('hidden'));
+            if (step === 2) {
+                document.getElementById('popup2').classList.remove('hidden');
+            } else if (step === 3) {
+                document.getElementById('game-container').classList.add('hidden');
+                document.getElementById('final-step').classList.remove('hidden');
+            }
+        }
+
+        function openGift() {
+            confetti({
+                particleCount: 200,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ['#f1c40f', '#e74c3c', '#ffffff']
+            });
+            document.getElementById('popup3').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
+
